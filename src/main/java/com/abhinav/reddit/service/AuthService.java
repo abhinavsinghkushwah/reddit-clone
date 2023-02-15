@@ -7,9 +7,16 @@ import java.util.UUID;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.abhinav.reddit.dto.AuthenticationResponse;
+import com.abhinav.reddit.dto.LoginRequest;
 import com.abhinav.reddit.dto.RegisterRequest;
 import com.abhinav.reddit.exceptions.SpringRedditException;
 import com.abhinav.reddit.model.NotificationEmail;
@@ -17,17 +24,19 @@ import com.abhinav.reddit.model.User;
 import com.abhinav.reddit.model.VerificationToken;
 import com.abhinav.reddit.repository.UserRepository;
 import com.abhinav.reddit.repository.VerificationTokenRepository;
+import com.abhinav.reddit.security.JwtProvider;
 
 import lombok.AllArgsConstructor;
 
 @Service
 @AllArgsConstructor //autowires the dependencies using constructor method
 public class AuthService {
-	
+	private final JwtProvider jwtProvider;
 	private final PasswordEncoder passwordEncoder;
 	private final UserRepository userRepository;
 	private final VerificationTokenRepository verificationTokenRepository;
 	private final MailService mailService;
+	private final AuthenticationManager authenticationManager;
 	@Transactional
 	public void signup(RegisterRequest registerRequest) {
 		User user=new User();
@@ -70,6 +79,13 @@ public class AuthService {
 		user.setEnabled(true);
 		userRepository.save(user);
 	}
+	
+	public AuthenticationResponse login(LoginRequest loginRequest) {
+		Authentication authenticate = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authenticate);
+		String token=jwtProvider.generateToken(authenticate);
+		return new AuthenticationResponse(token, loginRequest.getUsername());	
+		}
 	
 	
 }
