@@ -44,10 +44,9 @@ import java.security.interfaces.RSAPublicKey;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	 @Value("${jwt.public.key}")
-	    RSAPublicKey publicKey;
-
-	    @Value("${jwt.private.key}")
-	    RSAPrivateKey privateKey;
+	 RSAPublicKey publicKey;
+	 @Value("${jwt.private.key}")
+	 RSAPrivateKey privateKey;
 
     private final UserDetailsService userDetailsService;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
