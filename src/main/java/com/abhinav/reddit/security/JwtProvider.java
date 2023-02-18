@@ -44,6 +44,10 @@ public class JwtProvider {
     RSAPrivateKey privateKey;
 
     private KeyStore keyStore;
+    
+    private final JwtEncoder jwtEncoder;
+    @Value("${jwt.expiration.time}")
+    private Long jwtExpirationInMillis;
 
     @PostConstruct
     public void init() {
@@ -58,12 +62,19 @@ public class JwtProvider {
     }
 
     public String generateToken(Authentication authentication) {
-        org.springframework.security.core.userdetails.User principal = (User) authentication.getPrincipal();
-        System.out.println(this.getPrivateKey());
-        return Jwts.builder()
-                .setSubject(principal.getUsername())
-                .signWith(getPrivateKey())
-                .compact();
+        User principal = (User) authentication.getPrincipal();
+        return generateTokenWithUserName(principal.getUsername());
+    }
+
+    public String generateTokenWithUserName(String username) {
+        JwtClaimsSet claims = JwtClaimsSet.builder()
+                .issuer("self")
+                .issuedAt(Instant.now())
+                .expiresAt(Instant.now().plusMillis(jwtExpirationInMillis))
+                .subject(username)
+                .claim("scope", "ROLE_USER")
+                .build();
+        return this.jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
 
     private PrivateKey getPrivateKey() {
@@ -86,5 +97,9 @@ public class JwtProvider {
                 .getBody();
 
         return claims.getSubject();
+    }
+    
+    public Long getJwtExpirationInMillis() {
+    	return jwtExpirationInMillis;
     }
 }
