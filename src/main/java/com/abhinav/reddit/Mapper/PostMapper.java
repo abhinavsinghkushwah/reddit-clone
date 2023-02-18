@@ -1,5 +1,7 @@
 package com.abhinav.reddit.Mapper;
 
+import java.util.Optional;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,28 +11,44 @@ import com.abhinav.reddit.dto.PostResponse;
 import com.abhinav.reddit.model.Post;
 import com.abhinav.reddit.model.Subreddit;
 import com.abhinav.reddit.model.User;
+import com.abhinav.reddit.model.Vote;
+import com.abhinav.reddit.model.VoteType;
 import com.abhinav.reddit.repository.CommentRepository;
 import com.abhinav.reddit.repository.VoteRepository;
 import com.abhinav.reddit.service.AuthService;
+import com.github.marlonlom.utilities.timeago.TimeAgo;
 
 @Mapper(componentModel = "spring")
-public interface PostMapper {
+public abstract class PostMapper {
 
-	//had to add a plugin with annotation processor paths which has mapstruct and 
-	// lombok and mapstruct binding, otherwise mapper was not implementing this interface
-	//https://stackoverflow.com/questions/38162941/unknown-property-in-a-return-type
+    @Autowired
+    private CommentRepository commentRepository;
+    @Autowired
+    private VoteRepository voteRepository;
+    @Autowired
+    private AuthService authService;
 
 
     @Mapping(target = "createdDate", expression = "java(java.time.Instant.now())")
     @Mapping(target = "description", source = "postRequest.description")
     @Mapping(target = "subreddit", source = "subreddit")
+    @Mapping(target = "voteCount", constant = "0")
     @Mapping(target = "user", source = "user")
-    Post map(PostRequest postRequest, Subreddit subreddit, User user);
+    public abstract Post map(PostRequest postRequest, Subreddit subreddit, User user);
 
     @Mapping(target = "id", source = "postId")
     @Mapping(target = "subredditName", source = "subreddit.name")
     @Mapping(target = "userName", source = "user.username")
-    @Mapping(target = "postName", source = "postName")
-    PostResponse mapToDto(Post post);
+    @Mapping(target = "commentCount", expression = "java(commentCount(post))")
+    @Mapping(target = "duration", expression = "java(getDuration(post))")
+    public abstract PostResponse mapToDto(Post post);
 
+    Integer commentCount(Post post) {
+        return commentRepository.findByPost(post).size();
     }
+
+    String getDuration(Post post) {
+        return TimeAgo.using(post.getCreatedDate().toEpochMilli());
+    }
+}
+

@@ -26,6 +26,7 @@ public class AuthController {
 	
 	@PostMapping("/signup")
 	public ResponseEntity<String> signup(@RequestBody RegisterRequest reigsterRequest) {
+		System.out.println("signup method reached");
 		authService.signup(reigsterRequest);
 		return new ResponseEntity<>("User registration Successful",HttpStatus.OK);
 	}

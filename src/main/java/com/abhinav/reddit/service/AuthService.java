@@ -1,6 +1,6 @@
 package com.abhinav.reddit.service;
 
-import java.time.Instant;
+import java.time.Instant; 
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,6 +41,7 @@ public class AuthService {
 	@Transactional
 	public void signup(RegisterRequest registerRequest) {
 		User user=new User();
+		System.out.println("saved into user repo");
 		user.setUsername(registerRequest.getUsername());
 		user.setEmail(registerRequest.getEmail());
 		user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
@@ -66,7 +67,7 @@ public class AuthService {
 		
 	}
 	@Transactional
-    User getCurrentUser() {
+    public User getCurrentUser() {
         org.springframework.security.core.userdetails.User principal = (org.springframework.security.core.userdetails.User) SecurityContextHolder.
                 getContext().getAuthentication().getPrincipal();
         return userRepository.findByUsername(principal.getUsername())
