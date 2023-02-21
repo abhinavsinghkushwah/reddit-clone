@@ -2,6 +2,7 @@ package com.abhinav.reddit.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,6 +14,7 @@ import com.abhinav.reddit.service.VoteService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/votes")
 @AllArgsConstructor
