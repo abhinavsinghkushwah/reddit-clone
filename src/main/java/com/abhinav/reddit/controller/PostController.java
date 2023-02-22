@@ -19,7 +19,7 @@ import com.abhinav.reddit.service.PostService;
 import static org.springframework.http.ResponseEntity.status;
 import lombok.AllArgsConstructor;
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins="*")
 @RestController
 @RequestMapping("/api/posts/")
 @AllArgsConstructor
@@ -35,6 +35,7 @@ public class PostController {
 
     @GetMapping
     public ResponseEntity<List<PostResponse>> getAllPosts() {
+    	System.out.println("reached here");
         return status(HttpStatus.OK).body(postService.getAllPosts());
     }
 

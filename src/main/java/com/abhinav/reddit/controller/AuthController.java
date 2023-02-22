@@ -1,5 +1,10 @@
 package com.abhinav.reddit.controller;
 
+import static org.springframework.http.ResponseEntity.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -14,9 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.abhinav.reddit.dto.AuthenticationResponse;
 import com.abhinav.reddit.dto.LoginRequest;
+import com.abhinav.reddit.dto.PostResponse;
 import com.abhinav.reddit.dto.RefreshTokenRequest;
 import com.abhinav.reddit.dto.RegisterRequest;
 import com.abhinav.reddit.service.AuthService;
+import com.abhinav.reddit.service.PostService;
 import com.abhinav.reddit.service.RefreshTokenService;
 
 import lombok.AllArgsConstructor;
@@ -26,7 +33,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/auth")
 @AllArgsConstructor	
 public class AuthController {
-	
+	private final PostService postService;
 	private final AuthService authService;
 	private final RefreshTokenService refreshTokenService;
 	
@@ -36,6 +43,8 @@ public class AuthController {
 		authService.signup(reigsterRequest);
 		return new ResponseEntity<>("User registration Successful",HttpStatus.OK);
 	}
+	
+    
 	@GetMapping("accountVerificationToken/{token}")
 	public ResponseEntity<String> verifyAccount(@PathVariable String token){
 		System.out.println("verifyaccount reached");
@@ -44,6 +53,7 @@ public class AuthController {
 	}
 	@PostMapping("/login")
 	public AuthenticationResponse login(@RequestBody LoginRequest loginRequest) {
+		System.out.println("reached login backend");
 		return authService.login(loginRequest);
 	}
 	
