@@ -2,7 +2,7 @@ package com.abhinav.reddit.Mapper;
 
 
 
-import org.mapstruct.Mapper;
+import org.mapstruct.Mapper; 
 import org.mapstruct.Mapping;
 
 import com.abhinav.reddit.dto.CommentsDto;

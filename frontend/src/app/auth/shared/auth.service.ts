@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable ,Output,EventEmitter } from '@angular/core';
 import {HttpClient} from '@angular/common/http'
 import { SignUpRequestPayload } from '../sign-up/signup-request.payload';
 import { observableToBeFn } from 'rxjs/internal/testing/TestScheduler';
@@ -12,7 +12,8 @@ import {map, catchError,tap} from 'rxjs/operators'
   providedIn: 'root'
 })
 export class AuthService {
-  
+  @Output() loggedIn: EventEmitter<boolean> = new EventEmitter();
+  @Output() username: EventEmitter<string> = new EventEmitter();
   constructor(private httpClient: HttpClient, private localStorage: LocalStorageService) { }
 
   signup(signupRequestPayload: SignUpRequestPayload): Observable<any>{

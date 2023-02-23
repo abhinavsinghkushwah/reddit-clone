@@ -1,6 +1,6 @@
 package com.abhinav.reddit.controller;
 
-import static org.springframework.http.ResponseEntity.status;
+import static org.springframework.http.ResponseEntity.status; 
 
 import java.util.ArrayList;
 import java.util.List;

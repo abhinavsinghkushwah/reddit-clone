@@ -1,6 +1,6 @@
 package com.abhinav.reddit.Mapper;
 
-import java.util.Optional;
+import java.util.Optional; 
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

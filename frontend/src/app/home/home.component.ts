@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PostService } from '../shared/post.service';
 import { PostModel } from '../shared/PostModel';
-
+import { faArrowUp, faArrowDown, faComments } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -14,7 +14,7 @@ export class HomeComponent implements OnInit {
   constructor(private postService: PostService) {
     this.postService.getAllPosts().subscribe(post => {
       this.posts = post;
-    })
+    });
   }
 
   ngOnInit(): void {
