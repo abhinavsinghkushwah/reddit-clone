@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { PostModel } from '../shared/PostModel'; 
 import { PostService } from '../shared/post.service';
-import { PostModel } from '../shared/PostModel';
-import { faArrowUp, faArrowDown, faComments } from '@fortawesome/free-solid-svg-icons';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',

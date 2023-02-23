@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { PostService } from '../shared/post.service';
-import { faArrowUp, faArrowDown, faComments } from '@fortawesome/free-solid-svg-icons';
-import { PostModel } from '../shared/PostModel';
+import { Component, OnInit, ViewEncapsulation, Input } from '@angular/core';
+import { PostService } from '../shared/post.service'; 
+import { PostModel } from '../shared/PostModel'; 
+import { faComments } from '@fortawesome/free-solid-svg-icons';
 import { Router } from '@angular/router';
+
 
 @Component({
   selector: 'app-post-tile',
@@ -12,7 +13,7 @@ import { Router } from '@angular/router';
 export class PostTileComponent {
   
   faComments= faComments;
-  posts: Array<PostModel> = [];
+  @Input() posts: PostModel[];
 
   constructor(private postService: PostService, private router: Router) {
     this.postService.getAllPosts().subscribe(post => {

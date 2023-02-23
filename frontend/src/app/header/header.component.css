@@ -5,7 +5,6 @@ header{
     height: 50px;
     padding: 8px 8px 8px 0;
     width: 50px;
-
 }
 
 .reddit-text{        
@@ -15,7 +14,6 @@ header{
 }
 .logo{
     text-decoration: none;
-    padding-left: 10px;
 }
 
 .login, .sign-up{    
@@ -35,17 +33,13 @@ header{
     line-height: 24px;
     text-transform: uppercase;
     padding: 3px 16px;
-    opacity: 1; 
-     
+    opacity: 1;  
 }
-.login{
-    margin-right: 10px;
-}
+
 .sign-up{
     background-color: #0079D3;
     border-color: #0079D3;
     color: aliceblue;
-    margin: 2px;
 }
 
 .sign-up:hover{
